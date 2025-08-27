@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharingan do Itachi - Melhorado</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+        }
+
+        canvas {
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 600;
+
+        // Propriedades do Sharingan do Itachi
+        let sharingan = {
+            x: 400,
+            y: 300,
+            raio: 120,
+            angulo: 0 // Para rotação
+        };
+
+        // Função para desenhar o Sharingan do Itachi
+        function desenharSharingan() {
+            const corBorda = "#e60000"; // Vermelho do Sharingan
+            const corCentro = "#000000"; // Preto do centro
+
+            // Círculo externo (vermelho)
+            ctx.beginPath();
+            ctx.arc(0, 0, sharingan.raio, 0, Math.PI * 2);
+            ctx.fillStyle = corBorda;
+            ctx.fill();
+
+            // Círculo interno (preto)
+            ctx.beginPath();
+            ctx.arc(0, 0, sharingan.raio / 2, 0, Math.PI * 2);
+            ctx.fillStyle = corCentro;
+            ctx.fill();
+
+            // Desenhar os triângulos (padrão do Sharingan de Itachi)
+            desenharTriangulos();
+        }
+
+        // Função para desenhar os triângulos (padrão do Sharingan de Itachi)
+        function desenharTriangulos() {
+            const corTriangulo = "#000"; // Preto dos triângulos
+
+            for (let i = 0; i < 3; i++) {
+                const angulo = i * (Math.PI * 2 / 3) + sharingan.angulo; // Calcula o ângulo de cada triângulo
+                ctx.save();
+                ctx.rotate(angulo);
+
+                // Desenhar um triângulo com formas mais arredondadas
+                ctx.beginPath();
+                ctx.moveTo(0, -sharingan.raio / 2);
+                ctx.lineTo(sharingan.raio / 1.7, sharingan.raio / 4);
+                ctx.lineTo(-sharingan.raio / 1.7, sharingan.raio / 4);
+                ctx.closePath();
+                ctx.fillStyle = corTriangulo;
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        // Função para atualizar a animação
+        function atualizar() {
+            sharingan.angulo += 0.02; // Controle da rotação do Sharingan
+
+            if (sharingan.angulo > Math.PI * 2) {
+                sharingan.angulo = 0; // Resetar o ângulo para continuar girando
+            }
+        }
+
+        // Função para a animação
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa a tela
+
+            ctx.save();
+            ctx.translate(sharingan.x, sharingan.y); // Move para o centro da tela
+            desenharSharingan(); // Desenha o Sharingan
+            ctx.restore();
+
+            atualizar(); // Atualiza a rotação
+            requestAnimationFrame(loop); // Chama o próximo frame
+        }
+
+        // Iniciar a animação
+        loop();
+
+    </script>
+</body>
+</html>
